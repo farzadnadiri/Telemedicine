@@ -1,0 +1,74 @@
+<div class="login-box">
+  <div class="login-logo">
+    <a [routerLink]="['/']">تلمدیسین</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">جهت استفاده از سامانه وارد شوید</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="input-group mb-3">
+          <input
+            style="text-align: right;"
+            formControlName="username"
+            type="text"
+            class="form-control"
+            placeholder="شماره همراه"
+          />
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-phone"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            (input)="onSearchChange($event.target.value)"
+            style="text-align: right;"
+            formControlName="password"
+            type="password"
+            class="form-control"
+            placeholder="رمز عبور"
+          />
+      
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress" style="height: 15px;">
+          <div [ngClass]="passwordClass" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style.width]="passwordValue+'%'" [attr.aria-valuenow]="passwordValue" aria-valuemin="0" aria-valuemax="100">
+
+          </div>
+        </div>
+                 
+        <p style="width: 100%; text-align: right; font-size: small; margin-top: 0px; margin-bottom: 0px;">{{passwordText}}</p>
+        <br/>
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-12">
+            <app-button
+              [type]="'submit'"
+              [block]="true"
+              [text]="'ورود'"
+              [loading]="isAuthLoading"
+            ></app-button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      <br />
+      <p class="mb-1">
+        <a [routerLink]="['/forgetPassword']">فراموشی رمز عبور</a>
+      </p>
+      <p class="mb-0">
+        <a [routerLink]="['/register']" class="text-center">عضویت در سیستم</a>
+      </p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>

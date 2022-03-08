@@ -1,0 +1,272 @@
+<!-- Content Header (Page header) -->
+
+
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+
+    <div class="card">
+      <div class="card-header" style="direction: rtl;">
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          class="nav-pills"
+          style="padding-right: 0px !important;"
+        >
+          <li ngbNavItem>
+            <a ngbNavLink>اطلاعات پایه</a>
+            <ng-template ngbNavContent>
+              <div class="active tab-pane" id="activity">
+              
+            
+    <div class="card card-primary card-outline">
+      <div class="card-body" style="direction: rtl;text-align: right !important;">
+        <h5 style=" float: right; width: 100%;" class="card-title">تصویر پروفایل</h5>
+
+        <input id="upimage" style="display: none;" type="file" accept=".jpg,.png" (change)="fileChangeEvent($event)" />
+
+        <div class="row" style="margin-top: 50px;">
+
+          <div class="col-md-12">
+            <div class="p-container">
+              <img class="img-fluid img-circle" style="width: 200px; height: 200px; border: 3px solid #007bff;"
+                [src]="authService.currentUser.image? util.getAvatarThumbnail(authService.currentUser.image) : 'assets/img/user.png'"
+                alt="User profile picture" />
+              <div class="p-centered"><a onclick="document.getElementById('upimage').click()"
+                  style="color: white; cursor: pointer; background: rgba(0, 0, 0, 0.5);">تغییر تصویر</a></div>
+            </div>
+          </div>
+
+          <div class="col-md-12" style="margin-top: 60px;">
+            <image-cropper style="max-width: 500px; margin-left: auto; margin-right: auto;"
+              [imageChangedEvent]="imageChangedEvent" [roundCropper]="true" [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+          </div>
+          <button *ngIf="croppedImage" style="margin-left: auto; margin-right: auto; margin-top: 50px;" type="button"
+            class="btn btn-primary" (click)="uploadProfileImage()">آپلود تصویر</button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="card card-primary card-outline">
+      <div class="card-body" style="direction: rtl;text-align: right !important;">
+        <h5 style=" float: right; width: 100%;" class="card-title">اطلاعات عمومی بیمار</h5>
+        <br /> <br /> <br />
+
+        <form [formGroup]="generalForm" (ngSubmit)="save()">
+
+
+          <div class="form-group row">
+            <label style="text-align: left;" for="name" class="col-3 col-form-label">نام</label>
+            <div class="col-9">
+              <input type="text" placeholder="نام" class="form-control" id="name" formControlName="name">
+
+              <div style="direction: rtl; text-align: right;" *ngIf="name.invalid && (name.dirty || name.touched)"
+                class="alert alert-danger">
+                <div *ngIf="name.errors.required">
+                  ورود نام اجباری است
+                </div>
+                <div *ngIf="name.errors.minlength">
+                  نام میبایست حداقل 4 کاراکتر باشد
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">جنسیت</label>
+            <div class="col-9">
+              <div align="right" class="form-group">
+                <label>
+                  <input type="radio" checked value="male" formControlName="gender" />
+                  <span>&nbsp;آقا</span>
+                </label>
+                &nbsp; &nbsp; &nbsp;
+                <label>
+                  <input type="radio" value="female" formControlName="gender" />
+                  <span>&nbsp;خانم</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">کد ملی</label>
+            <div class="col-9">
+              <input id="nationalId" formControlName="nationalId" class="form-control" placeholder="کد ملی" />
+
+              <div style="direction: rtl; text-align: right;"
+                *ngIf="nationalId.invalid && (nationalId.dirty || nationalId.touched)" class="alert alert-danger">
+                <div *ngIf="nationalId.errors.required">
+                  ورود کد ملی اجباری است
+                </div>
+                <div *ngIf="nationalId.errors.pattern">
+                 فرمت کدملی صحیح نیست
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">شغل</label>
+            <div class="col-9">
+              <input type="text" placeholder="شغل" class="form-control" id="job" formControlName="job">
+
+              <div style="direction: rtl; text-align: right;" *ngIf="job.invalid && (job.dirty || job.touched)"
+                class="alert alert-danger">
+                <div *ngIf="job.errors.required">
+                  ورود شغل اجباری است
+                </div>
+                <div *ngIf="job.errors.minlength">
+                  شغل میبایست حداقل 4 کاراکتر باشد
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">شهر</label>
+            <div class="col-9">
+              <input type="text" placeholder="شهر" class="form-control" id="city" formControlName="city">
+
+              <div style="direction: rtl; text-align: right;" *ngIf="city.invalid && (city.dirty || city.touched)"
+                class="alert alert-danger">
+                <div *ngIf="city.errors.required">
+                  ورود شهر اجباری است
+                </div>
+                <div *ngIf="city.errors.minlength">
+                  شهر میبایست حداقل 4 کاراکتر باشد
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">وزن</label>
+            <div class="col-9">
+              <input type="number" placeholder="وزن" class="form-control" id="weight" formControlName="weight">
+
+              <div style="direction: rtl; text-align: right;" *ngIf="weight.invalid && (weight.dirty || weight.touched)"
+                class="alert alert-danger">
+                <div *ngIf="weight.errors.required">
+                  ورود وزن اجباری است
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">قد</label>
+            <div class="col-9">
+              <input type="number" placeholder="قد" class="form-control" id="height" formControlName="height">
+              <div style="direction: rtl; text-align: right;" *ngIf="height.invalid && (height.dirty || height.touched)"
+                class="alert alert-danger">
+                <div *ngIf="height.errors.required">
+                  ورود قد اجباری است
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">تب متوسط</label>
+            <div class="col-9">
+              <input type="number" placeholder="تب متوسط" class="form-control" id="temp" formControlName="temp">
+              <div style="direction: rtl; text-align: right;" *ngIf="temp.invalid && (temp.dirty || temp.touched)"
+                class="alert alert-danger">
+                <div *ngIf="temp.errors.required">
+                  ورود درجه حرارت نرمال اجباری است
+                </div>
+              </div>
+            </div>
+          </div>
+
+      
+          <div class="form-group row">
+            <label style="text-align: left;" class="col-3 col-form-label">تاریخ تولد</label>
+            <div class="col-9">
+              <input id="dateOfBirth" formControlName="dateOfBirth" class="form-control" placeholder="تاریخ تولد"
+                [dpDayPicker]="datePickerConfig" theme="dp-material" />
+              <div style="direction: rtl; text-align: right;"
+                *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="alert alert-danger">
+                <div *ngIf="dateOfBirth.errors.required">
+                  ورود تاریخ تولد اجباری است
+                </div>
+                <div *ngIf="!dateOfBirth.errors.required">
+                  لطفا تاریخ تولد را از منوی کشویی انتخاب نمایید
+                </div>
+              </div>
+            </div>
+          </div>
+
+ 
+          <div class="row">
+            <div class="col-sm-3 hidden-xs"></div>
+            <div class="col-xl-3 col-md-4 col-sm-5 col-xs-12">
+              <button type="submit" style="width: 100%;" class="btn btn-primary">
+                ذخیره
+              </button>
+            </div>    
+            </div>
+
+
+        </form>
+
+
+      </div>
+
+    </div>
+              </div>
+            </ng-template>
+          </li>
+
+          <li ngbNavItem>
+            <a ngbNavLink>پزشکان مجاز</a>
+            <ng-template ngbNavContent>
+              <div class="active tab-pane" id="activity">
+             <h6 style="text-align: center;">با انتخاب هریک از پزشکان خود، اعطای مجوز جهت دیدن کلیه اطلاعات پرونده سلامت خود را به آنها می‌دهید</h6>
+                  <h5>لیست پزشکان شما</h5>
+                  <br/>
+                  <div *ngFor="let item of doctors" class="card">
+                      <div class="card-header">
+                          <div class="row" style="direction: rtl;">
+                              <div class="col-6">
+                                  <h5 class="mb-0">
+                                      {{item.name}}
+                                  </h5>
+                              </div>
+                              <div class="col-6">
+
+                                  <div *ngIf="!item.done" class="form-check">
+                                      <input type="checkbox" [(ngModel)]="item.exist" class="form-check-input"
+                                          id="{{item._id}}">
+                                      <label class="form-check-label" style="margin-right: 20px;"
+                                          for="{{item._id}}">اعطای مجوز</label>
+                                  </div>
+                                 
+                              </div>
+
+                          </div>
+
+                      </div>
+                  </div>
+                  <button style="margin-bottom: 20px;" (click)="saveDoctors()" class="btn btn-success"> به روز رسانی مجوزها</button>
+              </div>
+            </ng-template>
+          </li>
+
+    
+        </ul>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+
+
+  </div>
+
+
+</section>

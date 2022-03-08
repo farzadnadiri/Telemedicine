@@ -1,0 +1,28 @@
+<li class="nav-item dropdown">
+  <a class="nav-link" data-toggle="dropdown" (click)="toggleDropdownMenu()">
+    <i style="font-size: x-large;" class="far fa-bell"></i>
+    &nbsp;
+    <span *ngIf="unseen" class="badge badge-danger navbar-badge">{{unseen}}</span>
+  </a>
+  <div #dropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu">
+    <p class="dropdown-item dropdown-header" style="margin-top: 0px; text-align: center;">اطلاعیه ها</p>
+    <div class="dropdown-divider"></div>
+    <div *ngFor="let item of items">
+      <a (click)="gotoNotificationsPage()" style="cursor: pointer; direction: rtl; text-align: right;" class="dropdown-item">
+        <p><i class="fas fa-envelope mr-2"></i>&nbsp;{{item.body}}</p>
+        <i class="text-muted" style="font-size: small; color: gray;">{{dateString(item.date)}}</i>
+      </a>
+      <div class="dropdown-divider"></div>
+    </div>
+    <a (click)="gotoNotificationsPage()" style="cursor: pointer; text-align: center;"
+      class="dropdown-item dropdown-footer">نمایش تمام اطلاعیه ها</a>
+  </div>
+</li>
+
+<ng-template #notification>
+  <a href="#" class="dropdown-item">
+    <i class="fas fa-envelope mr-2"></i> 4 new messages
+    <span class="float-right text-muted text-sm">3 mins</span>
+  </a>
+  <div class="dropdown-divider"></div>
+</ng-template>

@@ -1,0 +1,125 @@
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-sm-12">
+
+                <!-- QR code box -->
+                <div style="text-align: center;" class="card card-primary card-outline">
+                    <div class="card-header">
+                        شناسه نسخه
+                    </div>
+                    <qrcode [qrdata]="id" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+                    <p style="text-align: center !important;">{{id}}</p>
+                </div>
+
+                <!-- patient box -->
+                <div class="card card-primary card-outline">
+                    <div style="text-align: center;" class="card-header">
+                        بیمار
+                    </div>
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" [src]="
+                  prescription && prescription.patient.image
+                      ? util.getAvatarThumbnail(prescription.patient.image)
+                      : 'assets/img/user.png'
+                  " alt="User profile picture" />
+                        </div>
+
+                        <h3 class="profile-username text-center">
+                            {{ prescription ? prescription.patient.name : '' }}
+                        </h3>
+
+                    </div>
+
+                </div>
+                <!-- doctor box -->
+                <div class="card card-primary card-outline">
+                    <div style="text-align: center;" class="card-header">
+                        پزشک
+                    </div>
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" [src]="
+              prescription && prescription.doctor.image
+                  ? util.getAvatarThumbnail(prescription.doctor.image)
+                  : 'assets/img/user.png'
+              " alt="User profile picture" />
+                        </div>
+
+                        <h3 class="profile-username text-center">
+                            {{ prescription ? prescription.doctor.name : '' }}
+                        </h3>
+
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <!-- /.col -->
+            <div class="col-xl-9 col-sm-12">
+                <div *ngIf="prescription && prescription.diagnosis.length>0" class="card">
+                    <div class="card-body" style="direction: rtl; text-align: right;">
+
+                    <h5 style="text-align: center;">تشخیص ها</h5>
+                    <span style="direction: rtl; text-align: right; margin-left: 10px !important; font-size: large;" *ngFor="let item of prescription.diagnosis" class="badge badge-danger">
+                        {{item.text}} - {{item.status?'مشکوک':'قطعی'}}
+                      </span>
+                  </div>
+                </div>
+                <div *ngIf="prescription && prescription.medicines.length>0" id="drugs">
+                    <h5 style="text-align: center;">داروها</h5>
+                    <div *ngFor="let item of prescription.medicines" class="card">
+                      <div class="card-header">
+                        <h5 class="mb-0">
+                            {{item.name}}
+                        </h5>
+                      </div>
+
+                      <div class="card-body" style="text-align: justify; direction: rtl;">
+
+                        <p> <span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">میزان و زمان مصرف</span> {{item.usage}}</p>
+
+                        <p><span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">استفاده تا تاریخ</span> {{item.freq}}</p>
+
+                        <p><span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">توضیحات</span> {{item.description}}</p>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div *ngIf="prescription && prescription.experiments.length>0" class="card">
+                    <div class="card-body" style="direction: rtl; text-align: right;">
+                      <h5 style="text-align: center;">آزمایشات</h5>
+                      <span style="direction: rtl; text-align: right; margin-left: 10px !important; font-size: large;" *ngFor="let item of prescription.experiments" class="badge badge-warning">
+                          {{item}}
+                      </span>
+                    </div>
+                </div>
+
+                <div *ngIf="prescription && prescription.advice">
+
+                        <h5 style="text-align: center;">توصیه پزشک</h5>
+                        <div style="direction: rtl; text-align: right;" class="alert alert-info" role="alert">
+                            {{prescription.advice}}
+                          </div>
+                </div>
+
+                <div *ngIf="prescription && prescription.note && authService.currentUser.role != 1">
+
+                    <h5 style="text-align: center;">یادداشت پزشک</h5>
+                    <div style="direction: rtl; text-align: right;" class="alert alert-danger" role="alert">
+                        {{prescription.note}}
+                      </div>
+            </div>
+            <p style="direction: rtl; " *ngIf="prescription && prescription.nextVisit"> <span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">ویزیت بعدی</span>{{prescription.nextVisit}}</p>
+
+            </div>
+        </div>
+    </div>
+</section>

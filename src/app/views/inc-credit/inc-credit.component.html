@@ -1,0 +1,104 @@
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card card-primary card-outline">
+      <div
+        class="card-body"
+        style="direction: rtl; text-align: right !important;"
+      >
+        <h5 style="float: right; width: 100%;" class="card-title">مبلغ مشخص</h5>
+        <br />
+        <br />
+
+        <div class="row">
+          <div style="margin-bottom: 20px;" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+            <button
+              style="width: 100%;"
+              (click)="defaultValues(100000)"
+              class="btn btn-danger"
+            >
+              100 هزار تومان
+            </button>
+          </div>
+          <div style="margin-bottom: 20px;" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+            <button
+              style="width: 100%;"
+              (click)="defaultValues(200000)"
+              class="btn btn-warning"
+            >
+              200 هزار تومان
+            </button>
+          </div>
+          <div style="margin-bottom: 20px;" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+            <button
+              style="width: 100%;"
+              (click)="defaultValues(300000)"
+              class="btn btn-primary"
+            >
+              300 هزار تومان
+            </button>
+          </div>
+          <div style="margin-bottom: 20px;" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+            <button
+              style="width: 100%;"
+              (click)="defaultValues(400000)"
+              class="btn btn-success"
+            >
+              400 هزار تومان
+            </button>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+
+        <h5 style="float: right; width: 100%;" class="card-title">
+          مبلغ دلخواه
+        </h5>
+        <br />
+        <br />
+
+        <form [formGroup]="customForm" (ngSubmit)="save()">
+          <div class="form-group row">
+            <label
+              style="text-align: left;"
+              for="name"
+              class="col-sm-2 d-none d-sm-block col-form-label"
+              >مبلغ</label>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                type="number"
+                placeholder="مبلغ"
+                class="form-control"
+                id="amount"
+                formControlName="amount"
+              />
+
+              <div
+                style="direction: rtl; text-align: right;"
+                *ngIf="amount.invalid && (amount.dirty || amount.touched)"
+                class="alert alert-danger"
+              >
+                <div *ngIf="amount.errors.required">
+                  ورود مبلغ اجباری است
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-xl-3 col-md-4 col-sm-5 col-xs-12">
+              <button type="submit" style="width: 100%;" class="btn btn-primary">
+                پرداخت مبلغ دلخواه
+              </button>
+            </div>
+            
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

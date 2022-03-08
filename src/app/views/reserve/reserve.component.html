@@ -1,0 +1,144 @@
+
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card card-primary card-outline">
+      <div class="card-body">
+        <br />
+        <div class="form-group" style="direction: rtl; text-align: right;">
+          <div class="input-group">
+            <input
+              id="category"
+              [(ngModel)]="category"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="searchFailedCategory"
+              [ngbTypeahead]="searchCategory"
+              [resultFormatter]="formatter"
+              [inputFormatter]="formatter"
+              [resultTemplate]="rt"
+              placeholder="انتخاب تخصص"
+            />
+          </div>
+
+          <small *ngIf="searchingCategory" class="form-text text-muted">درحال جستجو...</small>
+          <div class="invalid-feedback" *ngIf="searchFailedCategory">
+            خطا در بارگزاری تخصص ها
+          </div>
+        </div>
+
+        <div class="form-group" style="direction: rtl; text-align: right;">
+          <div class="input-group">
+            <input
+              id="doctor"
+              [(ngModel)]="doctor"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="searchFailed"
+              [ngbTypeahead]="search"
+              [resultFormatter]="formatter"
+              [inputFormatter]="formatter"
+              [resultTemplate]="rt"
+              placeholder="انتخاب پزشک"
+            />
+          </div>
+
+          <small *ngIf="searching" class="form-text text-muted">درحال جستجو...</small>
+          <div class="invalid-feedback" *ngIf="searchFailed">
+            خطا در بارگزاری پزشکان
+          </div>
+        </div>
+
+        <div align="right" class="form-group">
+          <div class="input-group">
+            <input
+              autocomplete="off"
+              style="direction: rtl; text-align: right; "
+              id="dateOfBirth"
+              [(ngModel)]="date"
+              class="form-control"
+              placeholder="انتخاب تاریخ"
+              [dpDayPicker]="datePickerConfig"
+              theme="dp-material"
+              [readonly]="true"
+            />
+          </div>
+        </div>
+        <div class="form-group  row">
+ 
+          <div class="col-xl-3 col-md-4 col-sm-5 col-xs-12">
+            <button type="button" style="width: 100%;" class="btn btn-primary" (click)="filterRanges()">
+              جستجوی نوبت ها
+            </button>
+          </div>
+      </div>
+    </div>
+      <br />
+    </div>
+
+
+
+
+
+    <div class="row">
+
+      <div *ngFor="let item of items" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div class="card card-primary card-outline">
+
+          <div class="card-body">
+            <h4 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.name}}</h4>
+            <h5 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.category.name}}</h5>
+            <p style="text-align: center; direction: rtl;" class="card-text">{{item.date}}</p>
+            <p style="text-align: center; direction: rtl;" class="card-text">{{item.startTime.hour}}:{{item.startTime.minute}} - {{item.endTime.hour}}:{{item.endTime.minute}}</p>
+            <div style="width: 100%; text-align: center;" *ngIf="loading" >
+            <div class="spinner-border text-primary"></div>
+            </div>
+            <a *ngIf="!loading && !item.timedOut && item.status === 0 " (click)="reserve(item)" style="width: 100%; color: white;" class="btn btn-primary">رزرو این نوبت</a>
+            <a *ngIf="!loading && !item.timedOut && item.status === 1 && !item.myVisit" style="width: 100%; color: white;" class="btn btn-secondary">رزرو شده</a>
+            <a *ngIf="!loading && !item.timedOut && item.status === 1 && item.myVisit" (click)="cancelReserve(item)" style="width: 100%; color: white;" class="btn btn-danger">لغو رزرو</a>
+            <a *ngIf="!loading && item.timedOut"  style="width: 100%; color: white;" class="btn btn-secondary">غیر قابل رزرو</a>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+
+
+      <div class="row" *ngIf="items.length==0 && !loading">
+        <div class="col" style="text-align: center;" align="center">
+          <i style="font-size: 90px;" class="fas fa-list"></i>
+          <h5 style="text-align: center;">وقت ویزیتی موجود نیست</h5>
+        </div>
+      </div> 
+  </div>
+  <!-- /.card -->
+
+
+
+
+</section>
+<!-- /.content -->
+
+
+
+
+
+
+
+
+
+<ng-template
+  style="direction: rtl; text-align: right; float: right;"
+  #rt
+  let-r="result"
+  let-t="term"
+>
+  <ngb-highlight
+    style="direction: rtl; text-align: right; float: right;"
+    [result]="r.name"
+    [term]="t"
+  ></ngb-highlight>
+</ng-template>

@@ -1,0 +1,95 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" style="direction: rtl;">
+            <div class="col">
+
+                <div *ngIf="medicines && medicines.length>0" id="drugs">
+                    <h5 style="text-align: center;">لیست داروهای این نسخه</h5>
+                    <div *ngFor="let item of medicines" class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-0">
+                                        {{item.name}}
+                                    </h5>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div *ngIf="!item.done" class="form-check">
+                                        <input type="checkbox" [(ngModel)]="item.selected" class="form-check-input"
+                                            id="{{item._id}}">
+                                        <label class="form-check-label" style="margin-right: 20px;"
+                                            for="{{item._id}}">انتخاب این دارو</label>
+                                    </div>
+                                    <div *ngIf="item.done">
+                                        <p style="text-align: left;">این دارو توسط بیمار تحویل گرفته شده</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body" style="text-align: justify; direction: rtl;">
+
+                            <p> <span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">میزان و
+                                    زمان مصرف</span> {{item.usage}}</p>
+
+                            <p><span class="badge badge-primary" style="font-size: medium; margin-left: 10px;">استفاده
+                                    تا تاریخ</span> {{item.freq}}</p>
+
+                            <p><span class="badge badge-primary"
+                                    style="font-size: medium; margin-left: 10px;">توضیحات</span> {{item.description}}
+                            </p>
+
+                        </div>
+                    </div>
+                    <button style="margin-bottom: 20px;" (click)="open(confirmModal)" class="btn btn-success">تحویل داروهای انتخابی</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-header" style="direction: rtl;">
+
+      <h4 class="modal-title" id="modal-basic-title" style="direction: rtl; text-align: right;">
+        تحویل دارو
+      </h4>
+      <button
+      [hidden]="loading"
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body" style="direction: rtl;">
+        <h5 style="text-align: center; direction: rtl; font-weight: bold;">
+            داروهای انتخاب شده:
+          </h5>
+        <ul>
+            <li style="text-align: right;" *ngFor="let item of selectedItems">{{item.name}}</li>
+        </ul>
+
+      <h5 style="text-align: center; direction: rtl; font-weight: bold;">
+        آیا از تحویل داروهای انتخاب شده اطمینان دارید؟
+      </h5>
+      <br/>
+
+      <div [hidden]="!loading" class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+      </div>
+
+      <button [hidden]="loading" type="button" style="width: 100%;" class="btn btn-success" (click)="deliver()">
+        تحویل داروها
+      </button>
+    </div>
+  </ng-template>

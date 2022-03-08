@@ -1,0 +1,302 @@
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-3 col-md-12">
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img
+                  class="profile-user-img img-fluid img-circle"
+                  [src]="
+                  currentVisit && currentVisit.patient.image
+                      ? util.getAvatarThumbnail(currentVisit.patient.image)
+                      : 'assets/img/user.png'"
+                    alt="User profile picture"
+                />
+              </div>
+  
+              <h3 class="profile-username text-center">
+                {{ currentVisit ? currentVisit.patient.name : '' }}
+              </h3>
+  
+              <p class="text-muted text-center">
+                {{ currentVisit ? currentVisit.patient.username : '' }}
+              </p>
+  
+              <a *ngIf="currentVisit"
+                [routerLink]="['/chat', currentVisit.patient._id]"
+                class="btn btn-primary btn-block"><b style="color: white;">تماس</b></a>
+            </div>
+            <!-- /.card-body -->
+          </div>
+
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 style="text-align: center; width: 100%;" class="card-title">
+                تغییر وضعیت ویزیت
+              </h3>
+            </div>
+  
+            <div class="card-body" style="direction: rtl; text-align: right;">
+                <table class="table table-striped" style="text-align: right;">
+                    <thead>
+                      <tr>
+                        <th scope="col">تاریخ ویزیت</th>
+                        <th scope="col">ساعت ویزیت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ currentVisit ? currentVisit.date : '' }}</td>
+                        <td>{{ currentVisit ? currentVisit.startTime.hour : ''}}:{{ currentVisit ? currentVisit.startTime.minute : ''}} -
+                          {{currentVisit ? currentVisit.endTime.hour : ''}}:{{ currentVisit ? currentVisit.endTime.minute : ''}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button (click)="doctorstatusDone()" style="width: 100%; margin-top: 10px;" class="btn btn-success">ویزیت با موفقیت انجام شد</button>
+                  <br/>
+                  <br/>
+                  <div style="direction: rtl; text-align: right;" class="form-group">
+                    <label  for="exampleFormControlTextarea1">علت لغو رزرو</label>
+                    <textarea [(ngModel)]="cancelReason" class="form-control" placeholder="در صورتی که خواستار لغو رزرو هستید، علت آن را بیان نمایید" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+                  <button  (click)="doctorCancel()" style="width: 100%;" [class]="cancelReason? 'btn btn-danger' : 'btn btn-danger disabled'">لغو رزرو</button>  
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-xl-9 col-md-12">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 style="text-align: center; width: 100%;" class="card-title">
+                نسخه جدید
+              </h3>
+            </div>
+            <div class="card-body box-profile" style="direction: rtl; text-align: right;">
+              
+              <div class="row" style="margin-bottom: 20px;">
+                <div class="col col-md-6">
+                  <p>آیا به صورت مستقیم با بیمار صحبت کردید؟</p>
+                </div>
+              
+                  <div class="col col-md-6">
+                    <div style="direction: ltr;" class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="prescription.directVisit">
+                      <label ngbButtonLabel class="btn-primary">
+                        <input ngbButton type="radio" [value]="false"> خیر
+                      </label>
+                      <label ngbButtonLabel class="btn-primary">
+                        <input ngbButton type="radio" [value]="true"> بله
+                      </label>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="row" style="margin-bottom: 20px;">
+                <div class="col col-md-6">
+                  <div class="input-group" >
+                    <input [(ngModel)]="diagnosis.text" class="form-control"
+                      placeholder="تشخیص شما چیست؟" />
+                  </div>
+                </div>
+
+                <div class="col col-md-3">
+                  <div  style="direction: ltr;" class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="diagnosis.status">
+                    <label ngbButtonLabel class="btn-primary">
+                      <input ngbButton type="radio" [value]="false"> مشکوک
+                    </label>
+                    <label ngbButtonLabel class="btn-primary">
+                      <input ngbButton type="radio" [value]="true"> قطعی
+                    </label>
+                  </div>
+                </div>
+                <div class="col col-md-3" style="text-align: left;">
+                  <button (click)="addDiagnosis()" [class]="diagnosis.text? 'btn btn-primary' : 'btn btn-primary disabled'">افزودن تشخیص</button>
+                </div>
+              </div>
+
+              <div *ngFor="let item of prescription.diagnosis" class="alert alert-info alert-dismissible" role="alert">
+                {{item.text}} - {{item.status? 'قطعی':'مشکوک'}}
+
+                <button (click)="removeDiagnosis(item)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <br/>
+             
+             
+              <div>
+              <h5>داروهای مورد نیاز</h5>
+              <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-4">
+                  <div class="input-group" >
+                    <input [(ngModel)]="medicine.name" class="form-control"
+                      placeholder="نام دارو" />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group" >
+                    <input [(ngModel)]="medicine.usage" class="form-control"
+                      placeholder="میزان و زمان مصرف" />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group" >
+              
+                      <div align="right" class="form-group" style="width: 100%;">
+                        <div class="input-group">
+                          <input
+                            style="direction: rtl; text-align: right; "
+                            id="dateOfBirth"
+                            [(ngModel)]="medicine.freq"
+                            class="form-control"
+                            placeholder="استفاده تا تاریخ"
+                            [dpDayPicker]="datePickerConfig2"
+                            theme="dp-material"
+                            [readonly]="true"
+                            autocomplete="off"
+                          />
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+              <textarea [(ngModel)]="medicine.description" class="form-control" placeholder="توضیحات و ملاحظات استفاده از این دارو" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <div style="direction: ltr; text-align: left;">
+                <button (click)="addMedicine()" style="margin-top: 5px;" [class]="medicine.name && medicine.freq ? 'btn btn-primary' : 'btn btn-primary disabled'">افزودن دارو</button>
+              </div>
+              <br/>
+              <div *ngFor="let item of prescription.medicines" class="alert alert-info alert-dismissible" role="alert">
+                {{item.name}} - {{item.usage}} - {{item.freq}}
+                <button (click)="removeMedicine(item)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+            </div>
+            <div style="margin-bottom: 20px;">
+              <h5>آزمایشات مورد نیاز</h5>
+            <div class="row" >
+              <div class="col col-md-12">
+                <div class="input-group" >
+                  <input [(ngModel)]="experiment" class="form-control"
+                    placeholder="نام آزمایش" />
+                </div>
+              </div>
+            </div>
+            <div style="text-align: left;">
+              <button style="margin-top: 5px;" (click)="addExperiment()" [class]="experiment? 'btn btn-primary' : 'btn btn-primary disabled'">افزودن آزمایش</button>
+            </div>
+            <br/>
+            <div *ngFor="let item of prescription.experiments" class="alert alert-info alert-dismissible" role="alert">
+              {{item}}
+              <button  (click)="removeExperiment(item)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            </div>
+            <div>
+              <h6 style="color: green;">توصیه ها با بیمار به اشتراک گذاشته می شود</h6>
+              <textarea [(ngModel)]="prescription.advice" class="form-control" placeholder="توصیه های پزشک به بیمار" id="exampleFormControlTextarea3" rows="5"></textarea>
+            </div>
+            <br/>
+            <div>
+              <h6 style="color: red;">یادداشت های ویزیت با بیمار به اشتراک گذاشته نمی شود</h6>
+              <textarea [(ngModel)]="prescription.note" class="form-control" placeholder="یادداشت های ویزیت" id="exampleFormControlTextarea3" rows="5"></textarea>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col col-md-6">
+                <p>تاریخ ویزیت بعدی</p>
+
+              </div>
+              <div class="col col-md-6">
+                <div align="right" class="form-group">
+                  <div class="input-group">
+                    <input
+                      style="direction: rtl; text-align: right; "
+                      id="dateOfBirth"
+                      [(ngModel)]="prescription.nextVisit"
+                      class="form-control"
+                      placeholder="انتخاب تاریخ"
+                      [dpDayPicker]="datePickerConfig"
+                      theme="dp-material"
+                      [readonly]="true"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-md-12">
+                <button (click)="open(confirmModal)" style="margin-top: 5px;width: 100%;" class="btn btn-success">تایید اطلاعات و صدور نسخه</button>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <ng-template
+  style="direction: rtl; text-align: right; float: right;"
+  #rt
+  let-r="result"
+  let-t="term"
+>
+  <ngb-highlight
+    style="direction: rtl; text-align: right; float: right;"
+    [result]="r.name"
+    [term]="t"
+  ></ngb-highlight>
+</ng-template>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-header" style="direction: rtl;">
+   
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl; text-align: right;">
+      صدور نسخه
+    </h4>
+    <button
+    [hidden]="loading"
+    type="button"
+    class="close"
+    style="float: left !important; margin: 0 0 0 0 !important;"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <h5 style="text-align: center; direction: rtl; font-weight: bold;">
+      آیا از صدور این نسخه اطمینان دارید؟
+    </h5>
+    <br/>
+    <div style="text-align: right; direction: rtl;">
+      <div class="form-check">
+        <input [(ngModel)]="prescription.visitDone" class="form-check-input" type="checkbox" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault" style="margin-right: 20px;">
+          تغییر وضعیت ویزیت به انجام شده
+        </label>
+      </div>
+    </div>
+    <br />
+
+    <div [hidden]="!loading" class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
+
+    <button [hidden]="loading" type="button" style="width: 100%;" class="btn btn-success" (click)="sign()">
+      صدور نسخه
+    </button>
+  </div>
+</ng-template>

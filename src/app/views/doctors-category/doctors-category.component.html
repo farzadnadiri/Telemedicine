@@ -1,0 +1,199 @@
+
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <br />
+
+          <div class="card-body" style="direction: rtl;">
+
+            <div class="row" style="margin-bottom: 20px; margin-top: 10px;" >
+              <div class="col-md-10" style="margin-bottom: 10px;">
+                <div class="input-group" >
+                  <input (ngModelChange)="onFilterChange($event)" [ngModel]="filterWord" class="form-control"
+                    placeholder="برای فیلتر کردن تایپ نمایید.." />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <button
+                class="btn btn-outline-primary pull-right"
+                (click)="open(addNewModal)"
+              >
+                افزودن دسته بندی
+              </button>
+              </div>
+
+            </div>
+
+
+
+            <table class="table table-striped" style="text-align: right;">
+              <thead>
+                <tr>
+                  <th scope="col">دسته بندی</th>
+                  <th scope="col">عملیات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of items">
+                  <td>{{ item.name }}</td>
+                  <td>
+                    <a [routerLink]="" (click)="openEdit(editModal, item)">
+                      <span class="mdi mdi-pencil"></span></a>
+                      &nbsp;<a [routerLink]="" (click)="open(deleteModal, item)">
+                        <span class="mdi mdi-delete"></span>
+                      </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="collectionSize"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                (pageChange)="load()"
+              >
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+<!-- /.add new modal -->
+<ng-template #addNewModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl;">
+      افزودن دسته بندی
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <form [formGroup]="doctorCategoryForm" (ngSubmit)="save()">
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="نام دسته بندی"
+          />
+        </div>
+        <br />
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="name.errors.required">
+            ورود نام دسته بندی اجباری است
+          </div>
+          <div *ngIf="name.errors.minlength">
+            نام میبایست حداقل 4 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" >
+        ذخیره
+      </button>
+    </form>
+  </div>
+</ng-template>
+
+<!-- /.delete confirmation modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl;">
+      حذف دسته بندی
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <p style="text-align: right; direction: rtl;">
+      دسته بندی انتخاب شده: {{ selectedItem.name }}
+    </p>
+    <p style="text-align: right; direction: rtl;">
+      آیا از حذف این دسته بندی اطمینان دارید؟
+    </p>
+    <br />
+    <button type="button" class="btn btn-danger" (click)="delete(selectedItem)">
+      حذف
+    </button>
+  </div>
+</ng-template>
+
+<!-- /.edit modal -->
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl;">
+      ویرایش دسته بندی
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <form [formGroup]="doctorCategoryForm" (ngSubmit)="edit()">
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="نام دسته بندی"
+          />
+        </div>
+        <br />
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="name.errors.required">
+            ورود نام دسته بندی اجباری است
+          </div>
+          <div *ngIf="name.errors.minlength">
+            نام میبایست حداقل 4 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" (click)="edit()">
+        ویرایش
+      </button>
+    </form>
+  </div>
+</ng-template>

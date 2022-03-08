@@ -1,0 +1,93 @@
+<div class="wrapper" style="direction: rtl;">
+  <app-header (toggleMenuSidebar)="toggleMenuSidebar()"></app-header>
+
+  <app-menu-sidebar
+    (mainSidebarHeight)="mainSidebarHeight($event)"
+  ></app-menu-sidebar>
+
+  <div #contentWrapper style="direction: ltr; margin-top: 55px;" class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-left">
+              <li
+                *ngIf="titleService.getTitle() != 'داشبورد'"
+                class="breadcrumb-item"
+              >
+                <a [routerLink]="['/']">داشبورد</a>
+              </li>
+              <li class="breadcrumb-item active">
+                {{ titleService.getTitle() }}
+              </li>
+            </ol>
+          </div>
+          <!-- /.col -->
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{{ titleService.getTitle() }}</h1>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <router-outlet ></router-outlet>
+  </div>
+
+  <app-footer></app-footer>
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+  <div id="sidebar-overlay" (click)="toggleMenuSidebar()"></div>
+</div>
+
+<ng-template #callModal let-modal>
+  <div class="modal-header">
+    <h4
+      class="modal-title"
+      id="modal-basic-title"
+      style="width: 100%; text-align: center;"
+    >
+      در حال تماس...
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <div class="image">
+      <img
+        style="display: block; margin-left: auto; margin-right: auto;"
+        [src]="
+          callerUser.image
+            ? util.getAvatarThumbnail(callerUser.image)
+            : 'assets/img/user.png'
+        "
+        class="img-circle elevation-2"
+        alt="User Image"
+      />
+    </div>
+    <br />
+    <h4 style="text-align: center; direction: rtl;">
+      {{ callerUser.name }}
+    </h4>
+    <br />
+    <div class="row">
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-success"
+          style="text-align: center; width: 100%; float: right !important;"
+          (click)="answer()"
+        >
+          پاسخ دادن
+        </button>
+      </div>
+      <div class="col-6">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="text-align: center; width: 100%; float: left !important;"
+          (click)="reject()"
+        >
+          رد تماس
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

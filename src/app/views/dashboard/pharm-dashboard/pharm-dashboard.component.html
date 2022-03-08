@@ -1,0 +1,33 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" style="direction: rtl;">
+            <div class="col">
+                <div class="card card-primary card-outline">
+                    <div class="card-header" style="text-align: center;">
+                        جستجو و بازیابی نسخه
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group" style="direction: ltr;">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary" (click)="searchPrescription(prescriptionId)" type="button">جستجو</button>
+                                  </div>
+                                <input style="text-align: right;" id="prescriptionId" [(ngModel)]="prescriptionId" class="form-control"
+                                    placeholder="شناسه نسخه" />
+
+                            </div>
+                        </div>
+                        <div class="row" style="direction: ltr;">
+                            <div class="col-sm-12 col-md-6 offset-md-3">
+                                <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+                            </div>
+
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

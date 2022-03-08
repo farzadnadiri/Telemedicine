@@ -1,0 +1,40 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary card-outline">
+      <div
+        class="card-body"
+        style="direction: rtl; text-align: right !important;"
+      >
+        <table class="table table-striped" style="text-align: right;">
+          <thead>
+            <tr>
+              <th scope="col">مبلغ</th>
+              <th scope="col">علامت</th>
+              <th scope="col">بابت</th>
+              <th scope="col">زمان</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ item.amount | number }}</td>
+              <td *ngIf="item.sign === 0"><p class="badge badge-success">واریز</p></td>
+              <td *ngIf="item.sign !== 0"><p class="badge badge-danger">برداشت</p></td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.dateTime | jalali }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="load()"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

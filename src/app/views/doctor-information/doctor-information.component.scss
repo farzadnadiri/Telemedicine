@@ -1,0 +1,19 @@
+.p-container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  .p-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.cropper .overlay {
+background: none !important;
+  }
+
+.overlay {
+  background: none !important;
+}

@@ -1,0 +1,246 @@
+<aside #mainSidebar class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a [routerLink]="['/']" class="brand-link">
+    <p
+      style="text-align: center; margin-bottom: 0px;"
+      class="brand-text font-weight-light">
+      تلمدیسین
+    </p>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img
+          [src]="
+            authService.currentUser.image
+              ? util.getAvatarThumbnail(authService.currentUser.image)
+              : 'assets/img/user.png'
+          "
+          class="img-circle elevation-2"
+          alt="User Image"
+        />
+      </div>
+      <div class="info">
+        <a [routerLink]="['/profile']" class="d-block">{{authService.currentUser.name}}
+        </a>
+        <p
+          *ngIf="authService.currentUser.role === 1 || authService.currentUser.role === 2"
+          style="margin-top: 15px; margin-bottom: 0px; color: white;">
+          <span class="badge badge-primary">اعتبار {{ creditService.credit | number }} تومان</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+ 
+        <li class="nav-item">
+          <a [routerLink]="['/']" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              داشبورد
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/reserve']" class="nav-link">
+            <i class="nav-icon fas fa-stethoscope"></i>
+            <p>
+              رزرو نوبت
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/patientreserves']" class="nav-link">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+              ویزیت‌های من
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/patientprescriptions']" class="nav-link">
+            <i class="nav-icon fas fa-file-alt"></i>
+            <p>
+              نسخه‌های من
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/patientdiagnosis']" class="nav-link">
+            <i class="nav-icon fas fa-syringe"></i>
+            <p>
+             آزمایشات من
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/patientmedicines']" class="nav-link">
+            <i class="nav-icon 	fas fa-capsules"></i>
+            <p>
+              داروهای من
+            </p>
+          </a>
+        </li>
+
+
+
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/increasecredit']" class="nav-link">
+            <i class="fas fa-hand-holding-usd nav-icon"></i>
+            <p>افزایش اعتبار</p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/adminbank']" class="nav-link">
+            <i class="fas fa-landmark	 nav-icon"></i>
+            <p>بانک</p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/settlements']" class="nav-link">
+            <i class="fas fa-balance-scale nav-icon"></i>
+            <p>درخواست‌های تسویه</p>
+          </a>
+        </li>
+
+        <li *ngIf="authService.currentUser.role == 2" class="nav-item">
+          <a [routerLink]="['/settlementrequest']" class="nav-link">
+            <i class="far fa-credit-card nav-icon"></i>
+            <p>تسویه حساب</p>
+          </a>
+        </li>
+        <li
+        *ngIf="
+          authService.currentUser.role == 1 ||
+          authService.currentUser.role == 2
+        "
+        class="nav-item"
+      >
+        <a [routerLink]="['/transactions']" class="nav-link">
+          <i class="fas fa-chart-line nav-icon"></i>
+          <p>تراکنش ها</p>
+        </a>
+      </li>
+        <li *ngIf="authService.currentUser.role == 2" class="nav-item">
+          <a [routerLink]="['/doctorSchedule']" class="nav-link">
+            <i class="nav-icon far fa-calendar-alt"></i>
+            <p>
+              برنامه هفتگی
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 2" class="nav-item">
+          <a [routerLink]="['/doctorreservehistory']" class="nav-link">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+              تاریخچه ویزیت
+            </p>
+          </a>
+        </li>
+
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/patients']" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+              بیماران
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/doctors']" class="nav-link">
+            <i class="nav-icon fas fa-stethoscope"></i>
+            <p>
+              پزشکان
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/laboratories']" class="nav-link">
+            <i class="nav-icon fas fa-hospital"></i>
+            <p>
+              آزمایشگاه ها
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/pharmacies']" class="nav-link">
+            <i class="nav-icon fas fa-medkit"></i>
+            <p>
+              داروخانه ها
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/doctorsCategory']" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              دسته بندی پزشکان
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/adminSettings']" class="nav-link">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>
+              تنظیمات مدیر
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 0" class="nav-item">
+          <a [routerLink]="['/logs']" class="nav-link">
+            <i class="nav-icon fas fa-align-right"></i>
+            <p>
+              مدیریت رخدادها
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 1" class="nav-item">
+          <a [routerLink]="['/patientInformation']" class="nav-link">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>
+              تنظیمات
+            </p>
+          </a>
+        </li>
+        <li *ngIf="authService.currentUser.role == 2" class="nav-item">
+          <a [routerLink]="['/doctorInformation']" class="nav-link">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>
+              اطلاعات پزشک
+            </p>
+          </a>
+        </li>
+        <li
+          *ngIf="
+            authService.currentUser.role == 1 ||
+            authService.currentUser.role == 2
+          "
+          class="nav-item"
+        >
+          <a [routerLink]="['/chat']" class="nav-link">
+            <i class="nav-icon fas fa-comments"></i>
+            <p>
+              پیام رسان
+            </p>
+
+            <small
+              *ngIf="service.chatUnseenCount"
+              class="mr-3 badge badge-danger">
+              {{ service.chatUnseenCount }} پیام جدید
+            </small>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>

@@ -1,0 +1,101 @@
+<section class="content">
+    <div class="container-fluid">
+<div class="row">
+  <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-danger"><i class="fas fa-angle-double-up"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">مجموع پرداختی</span>
+            <span *ngIf="status" class="info-box-number">{{status.pay | number}} &nbsp;<small>تومان</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-success"><i class="fas fa-angle-double-down"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">مجموع دریافتی</span>
+            <span *ngIf="status" class="info-box-number">{{status.receive | number }} &nbsp;<small>تومان</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-warning"><i class="fas fa-money-bill-wave"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">درخواست‌های تسویه</span>
+            <span *ngIf="status" class="info-box-warning">{{status.settlement | number}} &nbsp;<small>تومان</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-info"><i class="far fa-credit-card"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">موجودی کاربران</span>
+            <span *ngIf="status" class="info-box-number">{{status.amount | number}} &nbsp;<small>تومان</small></span>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="row" style="direction: rtl;">
+    <div class="col">
+      <div class="card card-primary card-outline">
+        <div class="card-body">
+
+          <div class="input-group" style="margin-bottom: 20px;">
+            <input
+              (ngModelChange)="onFilterChange($event)"
+              [ngModel]="filterWord"
+              class="form-control"
+              placeholder="برای فیلتر کردن تایپ نمایید.."
+            />
+          </div>
+            <table
+            class="table table-striped"
+            style="text-align: right;"
+          >
+            <thead>
+              <tr>
+                <th scope="col">کاربر</th>
+                <th scope="col">مبلغ</th>
+                <th scope="col">علامت</th>
+                <th scope="col">بابت</th>
+                <th scope="col">زمان</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of TransactionsItems">
+                <td *ngIf="item.owner.role===1"><a [routerLink]="['/profile', item.owner._id]">{{ item.owner.name }}</a></td>
+                <td *ngIf="item.owner.role===2"><a [routerLink]="['/doctor', item.owner._id]">{{ item.owner.name }}</a></td>
+
+                <td>{{ item.amount | number }}</td>
+                <td>{{ item.sign === 0 ? 'دریافت' : 'پرداخت' }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.dateTime | jalali }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between p-2">
+            <ngb-pagination
+              [collectionSize]="TransactionsCollectionSize"
+              [(page)]="TransactionsPage"
+              [pageSize]="pageSize"
+              (pageChange)="loadTransactions()"
+            >
+            </ngb-pagination>
+          </div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>

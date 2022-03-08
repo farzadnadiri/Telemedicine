@@ -1,0 +1,82 @@
+<div class="container px-4">
+  <div style="direction: rtl;" class="media">
+    <img
+      [src]="image && image!= 'undefined' ? util.getAvatarThumbnail(image) : 'assets/img/user.png'"
+      alt="user"
+      width="50"
+      class="rounded-circle"
+      style="border: 2px solid #007bff;"
+    />
+    <div class="media-body mr-3">
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <h6
+          class="mb-0 font-weight-bold"
+          style="color: black; height: 50px; line-height: 40px;">
+          {{ user }} {{ display }}
+        </h6>
+      </div>
+    </div>
+  </div>
+  <div class="col col-sm-8 offset-sm-2 col-xs-12 rounded-lg overflow-hidden shadow" style="background: black;">
+    <div style="min-height: 250px;">
+      <video
+        #remoteVideo
+        width="100%"
+        height="auto"
+        autoplay
+        style="
+          display: block;
+          margin-right: auto;
+          margin-left: auto;
+          position: relative;
+        "
+      ></video>
+     
+      <h3
+        *ngIf="status"
+        style="
+          direction: rtl;
+          position: absolute;
+          top: 10%;
+          width: 100%;
+          text-align: center;
+          color: white;">
+        {{ status }}
+
+      <br/>
+        <img src="./../../../assets/img/callbg.png" />
+      </h3>
+     
+      
+      <video
+        [muted]="'muted'"
+        #selfVideo
+        width="30%"
+        height="auto"
+        autoplay
+        style="position: absolute; bottom: 0;"
+      ></video>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-center" style="margin: 5px; bottom: 0;">
+      <button (click)="micMuteUnmute()" style="min-width: 40px;" type="button" class="btn btn-primary">
+        <i *ngIf="micIsMute" class="fas fa-microphone"></i>
+        <i *ngIf="!micIsMute" class="fas fa-microphone-slash"></i>
+      </button>
+      <button
+        style="width: 150px; margin-left: 5px; margin-right: 5px;"
+        type="button"
+        class="btn btn-danger"
+        (click)="endCall()"
+      >
+        <i class="fas fa-phone-slash"></i>
+      </button>
+      <button (click)="videoOnOff()" style="min-width: 40px;" type="button" class="btn btn-primary">
+        <i *ngIf="videoIsOff" class="fas fa-video"></i>
+        <i *ngIf="!videoIsOff" class="fas fa-video-slash"></i>
+      </button>
+    </div>
+  </div>
+  <br/>
+</div>

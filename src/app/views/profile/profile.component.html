@@ -1,0 +1,404 @@
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-3 col-md-12">
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img
+                class="profile-user-img img-fluid img-circle"
+                [src]="
+                  profile && profile.image
+                    ? util.getAvatarThumbnail(profile.image)
+                    : 'assets/img/user.png'
+                "
+                alt="User profile picture"
+              />
+            </div>
+
+            <h3 class="profile-username text-center">
+              {{ profile ? profile.name : '' }}
+            </h3>
+
+            <p class="text-muted text-center">
+              {{ profile ? profile.username : '' }}
+            </p>
+
+            <p
+              *ngIf="profile && authService.currentUser.role === 0"
+              class="text-muted text-center"
+            >
+              <span class="badge badge-primary"
+                >اعتبار {{ profile.credit | number }} تومان</span
+              >
+            </p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b class="float-right">قد</b>
+                <a class="float-left">{{ profile ? profile.height : '' }}</a>
+              </li>
+              <li class="list-group-item">
+                <b class="float-right">وزن</b>
+                <a class="float-left">{{ profile ? profile.weight : '' }}</a>
+              </li>
+              <li class="list-group-item">
+                <b class="float-right">تب</b>
+                <a class="float-left">{{ profile ? profile.temp : '' }}</a>
+              </li>
+            </ul>
+
+            <a
+              *ngIf="authService.currentUser.role === 2"
+              [routerLink]="['/chat', id]"
+              class="btn btn-primary btn-block"
+              ><b style="color: white;">تماس</b></a
+            >
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 style="text-align: center; width: 100%;" class="card-title">
+              {{ profile ? profile.name : '' }}
+            </h3>
+          </div>
+
+          <div class="card-body" style="direction: rtl; text-align: right;">
+            <strong><i class="far fa-user mr-1"></i> جنسیت</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? (profile.gender == 'male' ? 'آقا' : 'خانم') : '' }}
+            </p>
+            <hr />
+            <strong><i class="fas fa-id-card mr-1"></i> کدملی</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.nationalId : '' }}
+            </p>
+
+            <hr />
+
+
+            <strong><i class="fas fa-fan mr-1"></i> شغل</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.job : '' }}
+            </p>
+
+            <hr />
+
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> شهر</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.city : '' }}
+            </p>
+
+            <hr />
+
+            <strong
+              ><i class="fas fa-birthday-cake mr-1"></i> تاریخ تولد</strong
+            >
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.dateOfBirth : '' }}
+            </p>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+      <div class="col-xl-9 col-md-12">
+        <div class="card">
+          <div class="card-header" style="direction: rtl;">
+            <ul
+              ngbNav
+              #nav="ngbNav"
+              class="nav-pills"
+              style="padding-right: 0px !important;"
+            >
+              <li ngbNavItem>
+                <a ngbNavLink>ویزیت ها</a>
+                <ng-template ngbNavContent>
+                  <div class="active tab-pane" id="activity">
+                    <table
+                      class="table table-striped"
+                      style="text-align: right; direction: rtl;"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">پزشک</th>
+                          <th class="d-none d-sm-table-cell" scope="col">تخصص</th>
+                          <th scope="col">زمان ویزیت</th>
+                          <th scope="col">وضعیت</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of profileVisitsItems">
+                          <td>{{ item.doctor.name }}</td>
+                          <td class="d-none d-sm-table-cell">{{ item.doctor.category.name }}</td>
+                          <td>{{ item.date }} <br/>     {{ item.startTime.hour }}:{{
+                            item.startTime.minute
+                          }}
+                          - {{ item.endTime.hour }}:{{ item.endTime.minute }}</td>
+                          <td>
+                            <span
+                              *ngIf="item.status === 2"
+                              class="badge badge-success"
+                              >انجام شده</span
+                            ><span
+                              *ngIf="item.status === 1"
+                              class="badge badge-primary"
+                              >برنامه ریزی شده</span
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileVisitsCollectionSize"
+                        [(page)]="profileVisitsPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadVisits()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+
+              <li *ngIf="authService.currentUser.role === 0" ngbNavItem>
+                <a ngbNavLink>تراکنش ها</a>
+                <ng-template ngbNavContent>
+                  <div class="active tab-pane" id="activity">
+                    <table
+                      class="table table-striped"
+                      style="text-align: right;"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">مبلغ</th>
+                          <th scope="col">علامت</th>
+                          <th scope="col">بابت</th>
+                          <th scope="col">زمان</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of profileTransactionsItems">
+                          <td>{{ item.amount | number }}</td>
+                          <td>{{ item.sign === 0 ? 'دریافت' : 'پرداخت' }}</td>
+                          <td>{{ item.description }}</td>
+                          <td>{{ item.dateTime | jalali }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileTransactionsCollectionSize"
+                        [(page)]="profileTransactionsPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadTransactions()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem>
+                <a ngbNavLink>دارو ها</a>
+                <ng-template ngbNavContent>
+                  
+                  <div class="active tab-pane" id="activity" style="direction: rtl;">
+
+                    <div class="row">
+
+                      <div *ngFor="let item of profileMedicineItems" class="col-md-6 col-sm-12 col-xs-12">
+                      
+                        <div class="card card-warning">
+                          <div class="card-header">
+                            <h5  style="text-align: center;">{{ item.name }}</h5>
+                      
+                          </div>
+                          <!-- /.card-header -->
+                          <div class="card-body">
+                            
+                            <p style="font-size: small; text-align: center;">تجویز شده توسط پزشک {{ item.doctor.name }}</p>
+                            <p style="text-align: center;">{{ item.usage }}</p>
+                            <p style="text-align: center; direction: ltr; width: 100%;" class="badge badge-primary">{{ item.freq }} شروع مصرف از {{ item.date | jalali }} تا</p>
+                      
+                          </div>
+                          <!-- /.card-body -->
+                        </div>
+                      
+                      </div>
+                      
+                      
+                      </div>
+
+
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileMedicineCollectionSize"
+                        [(page)]="profileMedicinePage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadMedicines()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+
+
+
+
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>آزمایش ها</a>
+                <ng-template ngbNavContent>
+                  
+
+
+                  <div class="active tab-pane" id="activity" style="direction: rtl;">
+
+                    <div class="row">
+
+                      <div *ngFor="let item of profileExperimentItems" class="col-md-6 col-sm-12 col-xs-12">
+                      
+                        <div class="card card-danger">
+                          <div class="card-header">
+                            <h5  style="text-align: center;">{{ item.name }}</h5>
+                      
+                          </div>
+                          <!-- /.card-header -->
+                          <div class="card-body">
+                            
+                            <p style="font-size: small; text-align: center;">تجویز شده توسط پزشک {{ item.doctor.name }}</p>
+                            <p style="text-align: center; width: 100%;" class="badge badge-primary">{{ item.date | jalali}}</p>
+                      
+                          </div>
+                          <!-- /.card-body -->
+                        </div>
+                      
+                      </div>
+                      
+                      
+                      </div>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileExperimentCollectionSize"
+                        [(page)]="profileExperimentPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadExperiments()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+
+
+
+
+
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>نسخه ها</a>
+                <ng-template ngbNavContent>
+                  
+                  <div class="active tab-pane" id="activity" style="direction: rtl;">
+                  
+                    
+      <div class="row">
+
+        <div *ngFor="let item of profilePrescriptionItems" class="col-xl-6 col-md-12 col-sm-12 col-xs-12">
+        
+          <div class="card card-success">
+            <div class="card-header">
+              <h5  style="text-align: center;">نسخه</h5>
+        
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              
+              <p style="font-size: small; text-align: center;">تجویز شده توسط پزشک {{ item.doctor.name }}</p>
+              <p style="text-align: center; width: 100%;" class="badge badge-primary">{{ item.date | jalali}}</p>
+              
+
+              <table
+class="table table-striped"
+style="text-align: right;">
+<thead>
+  <tr>
+    <th style="text-align: center;" scope="col">تشخیص‌ها</th>
+    <th style="text-align: center;" scope="col">داروها</th>
+    <th style="text-align: center;" scope="col">آزمایشات</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td style="text-align: center;">{{ item.diagnosis.length }}</td>
+    <td style="text-align: center;">{{ item.medicines.length }}</td>
+    <td style="text-align: center;">{{ item.experiments.length }}</td>
+  </tr>
+</tbody>
+</table>
+
+  <br/>
+              <a style="width: 100%;" [routerLink]="['/prescription', item._id]"
+              class="btn btn-success btn-block">
+           <b style="color: white;">نمایش</b>
+           </a>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        
+        </div>
+        
+        
+        </div>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profilePrescriptionCollectionSize"
+                        [(page)]="profilePrescriptionPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadPrescriptions()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+
+
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>تنظیمات</a>
+                <ng-template ngbNavContent>تنظیمات</ng-template>
+              </li>
+            </ul>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div [ngbNavOutlet]="nav"></div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>

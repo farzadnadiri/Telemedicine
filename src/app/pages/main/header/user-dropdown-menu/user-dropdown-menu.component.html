@@ -1,0 +1,32 @@
+<li class="nav-item dropdown user-menu">
+  <a
+    class="nav-link dropdown-toggle"
+    data-toggle="dropdown"
+    (click)="toggleDropdownMenu()">
+    <img
+      [src]="authService.currentUser.image? util.getAvatarThumbnail(authService.currentUser.image):'assets/img/user.png'"
+      class="user-image img-circle elevation-2"
+      alt="User Image"
+    />
+  </a>
+  <ul #dropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu">
+    <!-- User image -->
+    <li class="user-header bg-primary">
+      <img
+        [src]="authService.currentUser.image? util.getAvatarThumbnail(authService.currentUser.image) : 'assets/img/user.png'"
+        class="img-circle elevation-2"
+        alt="User Image"/>
+      <p style="text-align: center;">
+        {{ authService.currentUser.name }}
+      </p>
+      <p style="text-align: center;">
+        {{ authService.currentUser.username }}
+      </p>
+    </li>
+
+    <!-- Menu Footer-->
+    <li class="user-footer">
+      <a (click)="logout()" style="width: 100%;" class="btn btn-warning">خروج</a>
+    </li>
+  </ul>
+</li>

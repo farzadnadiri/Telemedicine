@@ -1,0 +1,140 @@
+<section class="content">
+    <div class="container-fluid">
+      <div *ngIf="patientUnload" class="alert alert-danger" style="direction: rtl; text-align: right;">
+        <strong>هشدار!</strong> اطلاعات پروفایل شما تکمیل نیست، جهت دریافت نوبت و ارتباط با پزشکان می‌بایست اطلاعات
+        پروفایل خود را از <a style="color: blue;" [routerLink]="['/patientInformation']">این لینک</a> تکمیل نمایید.
+      </div>
+
+      <div class="row">
+        <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3 *ngIf="status" >{{status.credit | number }}</h3>
+              <h3 *ngIf="!status" >-</h3>
+
+              <p>اعتبار حساب (تومان)</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>{{status?status.prescreptions:0}}</h3>
+
+              <p>نسخه</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>{{status?status.visits:0}}</h3>
+
+              <p>وقت ویزیت</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>{{status?status.medicines:0}}</h3>
+
+              <p>داروی تجویز شده</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+
+      <div class="row" *ngIf="patientActiveItems.length!=0">
+        <h5 class="col-md-12" style="text-align: right !important; direction: rtl;">ویزیت های فعال من</h5>
+      </div>
+      <div class="row" *ngIf="patientActiveItems.length!=0">
+        <div *ngFor="let item of patientActiveItems" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-primary card-outline">
+            <div class="card-body">
+              <h4 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.name}}</h4>
+              <h5 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.category.name}}
+              </h5>
+              <p style="text-align: center; direction: rtl;" class="card-text">{{item.date}}</p>
+              <p style="text-align: center; direction: rtl;" class="card-text">
+                {{item.startTime.hour}}:{{item.startTime.minute}} - {{item.endTime.hour}}:{{item.endTime.minute}}</p>
+                
+            <div style="width: 100%; text-align: center;" *ngIf="loading" >
+            <div class="spinner-border text-primary"></div>
+            </div>
+              <a *ngIf="!loading && item.status === 1 " (click)="patientCancel(item)" style="width: 100%; color: white;"
+                class="btn btn-danger">لغو رزرو</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="market">
+       <h3 style="direction: rtl; text-align: center; margin-top: 30px;">پزشک خود را بیابید!</h3>
+       <div class="row">
+        <div class="input-group col-md-12">
+          <input
+            (ngModelChange)="onFilterChange($event)"
+            [ngModel]="marketFilter"
+            class="form-control"
+            style="direction: rtl;"
+            placeholder="برای فیلتر کردن پزشکان تایپ نمایید.."
+          />
+        </div>
+       </div>
+        <div class="row" *ngFor="let item of market" style="direction: rtl; margin-top: 20px;">
+          <h5 *ngFor="let header of item._id" class="col-md-12" style="text-align: right !important; direction: rtl;">{{header.name}}</h5>
+          <div *ngFor="let doctor of item.doctors" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+          <div  class="card card-primary card-outline">
+            <div class="card-body" align="center">
+              <img
+              [src]="doctor.image? util.getAvatarThumbnail(doctor.image) : 'assets/img/user.png'"
+              class="img-circle elevation-2"
+              alt="User Image"
+              style="width: 100px; margin: auto;"
+              />
+              <p style="text-align: center; margin-top: 10px;">{{doctor.name}}</p>
+              <p style="text-align: center;" class="badge badge-warning">هزینه ویزیت {{doctor.visitFee | number}} تومان</p>
+              <a [routerLink]="['/doctorcard', doctor._id]" class="btn btn-primary" style="width: 100%;">
+                مشاهده اطلاعات
+              </a>
+            </div>
+            </div>
+          </div>
+      
+        </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+  </section>

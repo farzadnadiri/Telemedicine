@@ -1,0 +1,24 @@
+<!-- Admin Page -->
+<div *ngIf="user.role == 0">
+  <app-admin-dashboard></app-admin-dashboard>
+</div>
+
+<!-- Patient Page -->
+<div *ngIf="user.role == 1">
+  <app-patient-dashboard></app-patient-dashboard>
+</div>
+
+<!-- Doctor Page -->
+<div *ngIf="user.role == 2">
+  <app-doctor-dashboard></app-doctor-dashboard>
+</div>
+
+<!-- pharm Page -->
+<div *ngIf="user.role == 3">
+  <app-pharm-dashboard></app-pharm-dashboard>
+</div>
+
+<!-- lab Page -->
+<div *ngIf="user.role == 4">
+  <app-lab-dashboard></app-lab-dashboard>
+</div>

@@ -1,0 +1,33 @@
+{
+  "debugging": true,
+  "ServerUrl": "https://telemedicin.ir:8443/",
+  "UploadRoute": "uploads/",
+  "PageSize": 10,
+  "MinLenght": 4,
+  "MaxLenght": 50,
+  "API_ENDPOINTS": {
+    "ME": "api/auth/me",
+    "LOGIN": "api/auth/login",
+    "REGISTER": "api/auth/register",
+    "REQUESTCODE": "api/auth/requestCode",
+    "FORGETPASS": "api/auth/forgetPassword",
+    "RESETPASS": "api/auth/resetPassword",
+    "PEER": "api/auth/peer",
+    "USER": "api/auth/user",
+    "DOCTORS": "api/doctors",
+    "PATIENTS": "api/patients",
+    "LABORATORIES": "api/laboratories",
+    "PHARMACIES": "api/pharmacies",
+    "DOCTORSCATEGORY": "api/doctorsCategory",
+    "SETTINGS": "api/settings",
+    "VISIT": "api/visit",
+    "CHAT": "api/chat",
+    "UPLOAD": "api/upload",
+    "NOTIFICATIONS": "api/notifications",
+    "TRANSACTION": "api/transactions",
+    "SETTLEMENT": "api/settlement",
+    "PRESCRIPTION": "api/prescription",
+    "CALL": "api/call",
+    "LOG": "api/log"
+  }
+}

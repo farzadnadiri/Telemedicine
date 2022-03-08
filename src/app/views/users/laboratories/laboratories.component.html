@@ -1,0 +1,339 @@
+
+
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+         <div class="card-body" style="direction: rtl;">
+          <div class="row" style="margin-bottom: 20px; margin-top: 10px;" >
+            <div class="col-md-10" style="margin-bottom: 10px;">
+              <div class="input-group" >
+                <input (ngModelChange)="onFilterChange($event)" [ngModel]="filterWord" class="form-control"
+                  placeholder="برای فیلتر کردن تایپ نمایید.." />
+              </div>
+            </div>
+            <div class="col-md-2">
+              <button
+              class="btn btn-outline-primary pull-right"
+              (click)="open(addNewModal)"
+            >
+              افزودن آزمایشگاه
+            </button>
+            </div>
+          </div>
+
+
+<table class="table table-striped" style="text-align: right;">
+  <thead>
+    <tr>
+
+      <th scope="col">نام</th>
+      <th scope="col">نام کاربری</th>
+      <th scope="col">شهر</th>
+      <th scope="col">عملیات</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.name }}</td>
+      <td>{{ item.username }}</td>
+      <td>{{ item.city }}</td>
+      <td>
+        <a [routerLink]="" (click)="openEdit(addNewModal, item)"
+          ><span class="mdi mdi-pencil"></span></a
+        >&nbsp;<a [routerLink]="" (click)="open(deleteModal, item)"
+          ><span class="mdi mdi-delete"></span
+        ></a>&nbsp;
+        <a [routerLink]="" (click)="open(infoModal, item)"><span class="mdi mdi-information"></span></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="load()"
+  >
+  </ngb-pagination>
+</div>
+<ng-template #infoModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4
+      class="modal-title"
+      id="modal-basic-title"
+      style="direction: rtl;">
+      اطلاعات
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <p style="text-align: right; direction: rtl;">
+      کاربر انتخاب شده: {{ selectedItem.name }}
+    </p>
+    <br />
+    <table class="table table-striped" style="text-align: center;">
+        <tr>
+          <td>آدرس آی پی</td>
+          <td>{{selectedItem.ip}}</td>
+        </tr>
+        <tr>
+          <td>آخرین ورود</td>
+          <td>{{selectedItem.lastLogin | jalali}}</td>
+        </tr>
+        <tr>
+          <td>تلاش های ناموفق</td>
+          <td>{{selectedItem.UnsuccessfulAttempts}}</td>
+        </tr>
+    </table>
+  </div>
+</ng-template>
+<!-- /.add new modal -->
+<ng-template #addNewModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4
+      *ngIf="!isEdit"
+      class="modal-title"
+      id="modal-basic-title"
+      style="direction: rtl;"
+    >
+      افزودن آزمایشگاه
+    </h4>
+    <h4
+      *ngIf="isEdit"
+      class="modal-title"
+      id="modal-basic-title"
+      style="direction: rtl;"
+    >
+      ویرایش آزمایشگاه
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="نام آزمایشگاه"
+          />
+        </div>
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="name.errors.required">
+            ورود نام آزمایشگاه اجباری است
+          </div>
+          <div *ngIf="name.errors.minlength">
+            نام میبایست حداقل 4 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="username"
+            formControlName="username"
+            class="form-control"
+            placeholder="شماره همراه"
+          />
+        </div>
+
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="username.invalid && (username.dirty || username.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="username.errors.required">
+            ورود نام کاربری (شماره همراه) اجباری است
+          </div>
+          <div *ngIf="username.errors.pattern">
+            فرمت تلفن همراه صحیح نمی باشد
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="رمز عبور"
+            type="password"
+          />
+        </div>
+
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="password.invalid && (password.dirty || password.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="password.errors.required">
+            ورود رمز عبور اجباری است
+          </div>
+          <div *ngIf="password.errors.minlength">
+            رمز عبور میبایست حداقل 5 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            placeholder="تکرار رمز عبور"
+            type="password"
+          />
+        </div>
+
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="
+            confirmPassword.invalid &&
+            (confirmPassword.dirty || confirmPassword.touched)
+          "
+          class="alert alert-danger"
+        >
+          <div *ngIf="confirmPassword.errors.required">
+            ورود تکرار رمز عبور پزشک اجباری است
+          </div>
+          <div *ngIf="confirmPassword.errors.minlength">
+            تکرار رمز عبور میبایست حداقل 5 کاراکتر باشد
+          </div>
+          <div *ngIf="confirmPassword.errors.notEquivalent">
+            رمزعبور و تکرار آن باهم برابر نیستند
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            id="city"
+            formControlName="city"
+            class="form-control"
+            placeholder="شهر"
+          />
+        </div>
+
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="city.invalid && (city.dirty || city.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="city.errors.required">
+            ورود شهر اجباری است
+          </div>
+          <div *ngIf="city.errors.minlength">
+            شهر میبایست حداقل 4 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <textarea
+            id="address"
+            formControlName="address"
+            class="form-control"
+            placeholder="آدرس"
+          ></textarea>
+        </div>
+
+        <div
+          style="direction: rtl; text-align: right;"
+          *ngIf="address.invalid && (address.dirty || address.touched)"
+          class="alert alert-danger"
+        >
+          <div *ngIf="address.errors.required">
+            ورود آدرس اجباری است
+          </div>
+          <div *ngIf="address.errors.minlength">
+            آدرس میبایست حداقل 4 کاراکتر باشد
+          </div>
+        </div>
+      </div>
+
+      <button
+        *ngIf="isEdit"
+        type="button"
+        class="btn btn-primary"
+        (click)="edit()"
+      >
+        ویرایش
+      </button>
+
+      <button
+        *ngIf="!isEdit"
+        type="button"
+        class="btn btn-primary"
+        (click)="save()"
+      >
+        ذخیره
+      </button>
+    </form>
+  </div>
+</ng-template>
+
+<!-- /.delete confirmation modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl;">
+      حذف آزمایشگاه
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <p style="text-align: right; direction: rtl;">
+      آزمایشگاه انتخاب شده: {{ selectedItem.name }}
+    </p>
+    <p style="text-align: right; direction: rtl;">
+      آیا از حذف این آزمایشگاه اطمینان دارید؟
+    </p>
+    <br />
+    <button type="button" class="btn btn-danger" (click)="delete(selectedItem)">
+      حذف
+    </button>
+  </div>
+</ng-template>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>

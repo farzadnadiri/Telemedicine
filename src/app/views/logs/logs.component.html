@@ -1,0 +1,35 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" style="direction: rtl;">
+            <div class="col">
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <table class="table table-striped" style="text-align: right;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">زمان</th>
+                                    <th scope="col">دسته بندی</th>
+                                    <th scope="col">متن</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td><p>{{ item.timestamp | jalali }}</p></td>
+                                    <td><p>{{ item.level }}</p></td>
+                                    <td><p>{{ item.message }}</p></td>
+                                 
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="d-flex justify-content-between p-2">
+                            <ngb-pagination [collectionSize]="collectionSize"
+                                [(page)]="page" [pageSize]="pageSize" (pageChange)="load()">
+                            </ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

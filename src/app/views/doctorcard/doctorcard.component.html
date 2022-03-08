@@ -1,0 +1,119 @@
+<section class="content">
+    <div class="container-fluid">
+        
+
+        <div *ngIf="doctorData" style="direction: rtl;">
+
+            <div  class="card card-primary card-outline">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-6 col-md-12">
+                            <div class="row">
+
+                                <div class="col-3">
+                                    <img
+                  [src]="doctorData.image? util.getAvatarThumbnail(doctorData.image) : 'assets/img/user.png'"
+                  class="img-circle elevation-2"
+                  alt="User Image"
+                  style="width: 100%; margin: auto;"
+                  />
+        
+                                </div>
+                                <div class="col-9">
+                                    <h3 style="direction: rtl;">{{doctorData.name}}</h3>
+                                    <h6 style="direction: rtl; margin-top: 10px;">{{doctorData.category.name}}</h6>
+                                    <p style="direction: rtl; float: right;" class="badge badge-warning">هزینه ویزیت {{doctorData.visitFee | number}} تومان</p>
+        
+                                </div>
+                                <div class="col-12">
+                                    <p style="direction: auto; text-align: justify;" >{{doctorData.desc}}</p>
+                                    
+                                </div>
+        
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                            <p style="width: 100%; text-align: center;">برنامه هفتگی پزشک</p>
+
+                            <div class="row" >
+                                <div class="col-sm-6 col-md-4" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;" *ngFor="let item of doctorSchedule">
+                                    <div class="color-palette-set">
+                                      <div class="bg-success color-palette"><p style="text-align: center; margin-bottom: 0px;">{{item.name}}</p></div>
+                                      <div class="bg-success disabled color-palette"><ul style="margin-bottom: 0px;"><li style="text-align: center;" *ngFor="let day of item.data">{{day.title}}</li></ul></div>
+                                    </div>
+                                  </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="direction: rtl;" class="card card-primary card-outline">
+                <div class="card-body">
+                    <h5 style="width: 100%; text-align: center;">روزر نوبت از این پزشک</h5>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-xl-4 col-md-6 col-sm-12" style=" padding-bottom: 10px;">
+
+                            <div class="input-group">
+                                <input
+                                  autocomplete="off"
+                                  style="direction: rtl; text-align: right;"
+                                  id="dateOfBirth"
+                                  [(ngModel)]="date"
+                                  class="form-control"
+                                  placeholder="انتخاب تاریخ"
+                                  [dpDayPicker]="datePickerConfig"
+                                  theme="dp-material"
+                                  [readonly]="true"
+                                />
+                              </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6 col-sm-12">
+                            <button type="button" style="width: 100%;" class="btn btn-primary" (click)="filterRanges()">
+                                جستجوی نوبت ها
+                              </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            
+    <div class="row">
+       
+        <div *ngFor="let item of items" class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+          <div class="card card-primary card-outline">
+  
+            <div class="card-body">
+              <h4 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.name}}</h4>
+              <h5 style="text-align: center !important; width: 100%;" class="card-title">{{item.doctor.category.name}}</h5>
+              <p style="text-align: center; direction: rtl;" class="card-text">{{item.date}}</p>
+              <p style="text-align: center; direction: rtl;" class="card-text">{{item.startTime.hour}}:{{item.startTime.minute}} - {{item.endTime.hour}}:{{item.endTime.minute}}</p>
+              <div style="width: 100%; text-align: center;" *ngIf="loading" >
+              <div class="spinner-border text-primary"></div>
+              </div>
+              <a *ngIf="!loading && !item.timedOut && item.status === 0 " (click)="reserve(item)" style="width: 100%; color: white;" class="btn btn-primary">رزرو این نوبت</a>
+              <a *ngIf="!loading && !item.timedOut && item.status === 1 && !item.myVisit" style="width: 100%; color: white;" class="btn btn-secondary">رزرو شده</a>
+              <a *ngIf="!loading && !item.timedOut && item.status === 1 && item.myVisit" (click)="cancelReserve(item)" style="width: 100%; color: white;" class="btn btn-danger">لغو رزرو</a>
+              <a *ngIf="!loading && item.timedOut"  style="width: 100%; color: white;" class="btn btn-secondary">غیر قابل رزرو</a>
+            </div>
+          </div>
+        </div>
+      
+    
+  
+    </div>
+        <div class="row" *ngIf="items && items.length==0" style="padding-bottom: 20px;">
+            <div class="col" style="text-align: center;" align="center">
+              <i style="font-size: 90px;" class="fas fa-list"></i>
+              <h5 style="text-align: center;">هیچ نوبتی برنامه ریزی نشده</h5>
+            </div>
+            <br/>
+          </div>
+        </div>
+
+    </div>
+
+</section>

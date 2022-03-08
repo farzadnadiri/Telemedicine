@@ -1,0 +1,15 @@
+<nav class="main-header navbar navbar-expand fixed-top navbar-white navbar-light" style="direction: ltr;">
+  <ul class="navbar-nav mr-auto">
+    <app-user-dropdown-menu></app-user-dropdown-menu>
+    <app-notifications-dropdown-menu></app-notifications-dropdown-menu>
+
+  </ul>
+
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" (click)="toggleMenuSidebar.emit()" role="button"
+        ><i class="fas fa-bars"></i
+      ></a>
+    </li>
+  </ul>
+</nav>

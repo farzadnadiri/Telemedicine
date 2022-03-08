@@ -1,0 +1,71 @@
+
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="card card-primary card-outline">
+      <div class="container-fluid">
+        <br />
+        <form [formGroup]="settingsForm" (ngSubmit)="save()">
+          <div class="form-group" style="direction: rtl; text-align: right;">
+            <label for="visitDuration">طول ویزیت ها (دقیقه)</label>
+            <div class="input-group">
+              <input
+                id="visitDuration"
+                formControlName="visitDuration"
+                class="form-control"
+                type="number"
+                placeholder="طول ویزیت ها"
+              />
+            </div>
+
+            <div
+              style="direction: rtl; text-align: right;"
+              *ngIf="
+                visitDuration.invalid &&
+                (visitDuration.dirty || visitDuration.touched)
+              "
+              class="alert alert-danger"
+            >
+              <div *ngIf="visitDuration.errors.required">
+                ورود طول ویزیت پزشک اجباری است
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="direction: rtl; text-align: right;">
+            <label for="visitDays">روزهای باز نوبت دهی (روز)</label>
+            <div class="input-group">
+              <input
+                id="visitDays"
+                formControlName="visitDays"
+                class="form-control"
+                type="number"
+                placeholder="روزهای باز نوبت دهی"
+              />
+            </div>
+
+            <div
+              style="direction: rtl; text-align: right;"
+              *ngIf="
+                visitDays.invalid &&
+                (visitDays.dirty || visitDays.touched)
+              "
+              class="alert alert-danger"
+            >
+              <div *ngIf="visitDays.errors.required">
+               روزهای باز جهت نوبت دهی
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="save()">
+            ذخیره
+          </button>
+        </form>
+
+        <br />
+      </div>
+    </div>
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->

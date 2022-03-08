@@ -1,0 +1,115 @@
+{
+  "name": "com.telemedicin.hello",
+  "displayName": "milandroid",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev:start": "ng serve",
+    "dev:build": "ng build --prod",
+    "dev:test": "ng test",
+    "dev:lint": "ng lint",
+    "dev:e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~9.1.3",
+    "@angular/common": "~9.1.3",
+    "@angular/compiler": "~9.1.3",
+    "@angular/core": "~9.1.3",
+    "@angular/forms": "~9.1.3",
+    "@angular/http": "^7.2.16",
+    "@angular/localize": "~9.1.3",
+    "@angular/platform-browser": "~9.1.3",
+    "@angular/platform-browser-dynamic": "~9.1.3",
+    "@angular/router": "~9.1.3",
+    "@asymmetrik/ngx-leaflet": "^8.1.0",
+    "@mdi/font": "^5.6.55",
+    "@ng-bootstrap/ng-bootstrap": "^6.1.0",
+    "@zxing/browser": "0.0.8",
+    "@zxing/library": "^0.18.4",
+    "@zxing/ngx-scanner": "^3.1.3",
+    "angular-password-strength-meter": "^2.0.0",
+    "angular2-jwt": "^0.2.3",
+    "angularx-qrcode": "~2.3.5",
+    "bootstrap": "^4.4.0",
+    "bootstrap-v4-rtl": "^4.5.2-1",
+    "c": "^1.1.1",
+    "check-password-strength": "^2.0.3",
+    "core-js": "^2.5.4",
+    "day": "0.0.2",
+    "dayjs": "^1.9.6",
+    "detectrtc": "^1.4.1",
+    "express": "^4.17.1",
+    "google-libphonenumber": "^3.2.22",
+    "ionicons": "2.0.1",
+    "jalali-moment": "^3.3.8",
+    "jalaliday": "^2.3.0",
+    "jquery": "^3.5.1",
+    "leaflet": "^1.7.1",
+    "moment": "^2.29.1",
+    "ng2-jalali-date-picker": "^2.4.2",
+    "ng2-password-strength-bar": "^1.2.5",
+    "ngx-image-cropper": "^3.3.1",
+    "ngx-infinite-scroll": "^10.0.0",
+    "ngx-toastr": "^10.2.0",
+    "peerjs": "^1.3.1",
+    "rxjs": "^6.5.5",
+    "rxjs-compat": "^6.6.2",
+    "socket.io-client": "^3.0.3",
+    "tslib": "^1.11.1",
+    "zone.js": "~0.10.3",
+    "zxcvbn": "^4.4.2",
+    "zxcvbn3": "^0.1.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.3",
+    "@angular/cli": "~9.1.3",
+    "@angular/compiler-cli": "~9.1.1",
+    "@angular/language-service": "~9.1.1",
+    "@types/jasmine": "~3.5.0",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/leaflet": "^1.5.19",
+    "@types/node": "^12.11.1",
+    "admin-lte": "3.0.4",
+    "codelyzer": "^5.1.2",
+    "cordova-android": "^9.1.0",
+    "cordova-plugin-whitelist": "^1.3.4",
+    "husky": "^4.2.5",
+    "jasmine-core": "~3.5.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.4.1",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~2.1.0",
+    "karma-jasmine-html-reporter": "^1.4.2",
+    "lint-staged": "^10.2.0",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "protractor": "~5.4.3",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "~3.8.3"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "node ng-lint-staged.js dev:lint",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && ng lint && lint-staged"
+    }
+  }
+}

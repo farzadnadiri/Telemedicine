@@ -1,0 +1,336 @@
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-success"><i class="fas fa-medkit"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">داروخانه فعال</span>
+            <span class="info-box-number">{{status?status.pharmacies:0}} &nbsp;<small>عدد</small></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-info"><i class="fas fa-hospital"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">آزمایشگاه فعال</span>
+            <span class="info-box-number">{{status?status.laboratories:0}} &nbsp;<small>عدد</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-warning"><i class="fas fa-stethoscope"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">پزشکان فعال</span>
+            <span class="info-box-warning">{{status?status.doctors:0}} &nbsp;<small>نفر</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+        <div style="direction: rtl; text-align: right;" class="info-box">
+          <span class="info-box-icon bg-danger"><i class="fas fa-user"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">بیماران فعال</span>
+            <span class="info-box-number">{{status?status.patients:0}} &nbsp;<small>نفر</small></span>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{status?status.done:0}}</h3>
+            <p>ویزیت انجام شده</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{status?status.scheduled:0}}</h3>
+
+            <p>ویزیت برنامه ریزی شده</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{status?status.today:0}}</h3>
+
+            <p>ویزیت های امروز</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-person-add"></i>
+          </div>
+          <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{status?status.priority:0}}</h3>
+
+            <p>ویزیت در اولویت</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          <a href="#" class="small-box-footer">اطلاعات بیشتر <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row" style="direction: rtl;">
+      <div class="col">
+        <div class="card card-primary card-outline">
+          <div class="card-body">
+            <h5 style="text-align: center !important; float: right; width: 100%;" class="card-title">ویزیت های در
+              اولویت</h5>
+              <div class="input-group" style="margin-bottom: 20px;">
+                <input (ngModelChange)="onFilterChangePriority($event)" [ngModel]="filterWordPriority" class="form-control"
+                  placeholder="برای فیلتر کردن تایپ نمایید.." />
+              </div>
+              <div class="table-responsive">
+
+            
+            <table class="table table-striped" style="text-align: right;">
+              <thead>
+                <tr>
+                  <th scope="col">پزشک</th>
+                  <th scope="col">بیمار</th>
+                  <th scope="col">تاریخ ویزیت</th>
+                  <th scope="col">ساعت ویزیت</th>
+                  <th class="d-none d-xl-table-cell" scope="col">جنیست</th>
+                  <th class="d-none d-xl-table-cell" scope="col">کدملی</th>
+                  <th class="d-none d-xl-table-cell" scope="col">تاریخ تولد</th>
+                  <th class="d-none d-xl-table-cell" scope="col">شهر</th>
+                  <th scope="col">اولویت</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of priorityItems">
+                  <td><a [routerLink]="['/doctor', item.doctor._id]">{{ item.doctor.name }}</a></td>
+                  <td><a [routerLink]="['/profile', item.patient._id]">{{ item.patient.name }}</a></td>
+                  <td>{{ item.date }}</td>
+                  <td>{{item.startTime.hour}}:{{item.startTime.minute}} -
+                    {{item.endTime.hour}}:{{item.endTime.minute}}</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'male'">آقا</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'female'">خانم</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.nationalId }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.dateOfBirth }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.city }}</td>
+                  <td><span class="badge badge-danger">فوری</span></td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination [collectionSize]="priorityCollectionSize" [(page)]="priorityPage"
+                [pageSize]="pageSize" (pageChange)="priority()">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="direction: rtl;">
+      <div class="col">
+        <div class="card card-primary card-outline">
+          <div class="card-body">
+            <h5 style="text-align: center !important; float: right; width: 100%;" class="card-title">ویزیت های امروز
+            </h5>
+            <div class="input-group" style="margin-bottom: 20px;">
+              <input (ngModelChange)="onFilterChangeToday($event)" [ngModel]="filterWordToday" class="form-control"
+                placeholder="برای فیلتر کردن تایپ نمایید.." />
+            </div>
+            <table class="table table-striped" style="text-align: right;">
+              <thead>
+                <tr>
+                  <th scope="col">پزشک</th>
+                  <th scope="col">بیمار</th>
+                  <th scope="col">تاریخ ویزیت</th>
+                  <th scope="col">ساعت ویزیت</th>
+                  <th class="d-none d-xl-table-cell" scope="col">جنیست</th>
+                  <th class="d-none d-xl-table-cell" scope="col">کدملی</th>
+                  <th class="d-none d-xl-table-cell" scope="col">تاریخ تولد</th>
+                  <th class="d-none d-xl-table-cell"  scope="col">شهر</th>
+                  <th scope="col">اولویت</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of todayItems">
+                  <td><a [routerLink]="['/doctor', item.doctor._id]">{{ item.doctor.name }}</a></td>
+                  <td><a [routerLink]="['/profile', item.patient._id]">{{ item.patient.name }}</a></td>
+                  <td>{{ item.date }}</td>
+                  <td>{{item.startTime.hour}}:{{item.startTime.minute}} -
+                    {{item.endTime.hour}}:{{item.endTime.minute}}</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'male'">آقا</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'female'">خانم</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.nationalId }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.dateOfBirth }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.city }}</td>
+                  <td><span class="badge badge-warning">امروز</span></td>
+
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination [collectionSize]="todayCollectionSize" [(page)]="todayPage"
+                [pageSize]="pageSize" (pageChange)="today()">
+              </ngb-pagination>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row" style="direction: rtl;">
+      <div class="col">
+        <div class="card card-primary card-outline">
+          <div class="card-body">
+            <h5 style="text-align: center !important; float: right; width: 100%;" class="card-title">ویزیت های برنامه ریزی
+              شده</h5>
+              <div class="input-group" style="margin-bottom: 20px;">
+                <input (ngModelChange)="onFilterChangeScheduled($event)" [ngModel]="filterWordScheduled" class="form-control"
+                  placeholder="برای فیلتر کردن تایپ نمایید.." />
+              </div>
+            <table class="table table-striped" style="text-align: right;">
+              <thead>
+                <tr>
+                  <th scope="col">پزشک</th>
+                  <th scope="col">بیمار</th>
+                  <th scope="col">تاریخ ویزیت</th>
+                  <th scope="col">ساعت ویزیت</th>
+                  <th class="d-none d-xl-table-cell" scope="col">جنیست</th>
+                  <th class="d-none d-xl-table-cell" scope="col">کدملی</th>
+                  <th class="d-none d-xl-table-cell" scope="col">تاریخ تولد</th>
+                  <th class="d-none d-xl-table-cell" scope="col">شهر</th>
+                  <th scope="col">اولویت</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of scheduledItems">
+                  <td><a [routerLink]="['/doctor', item.doctor._id]">{{ item.doctor.name }}</a></td>
+                  <td><a [routerLink]="['/profile', item.patient._id]">{{ item.patient.name }}</a></td>
+                  <td>{{ item.date }}</td>
+                  <td>{{item.startTime.hour}}:{{item.startTime.minute}} -
+                    {{item.endTime.hour}}:{{item.endTime.minute}}</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'male'">آقا</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'female'">خانم</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.nationalId }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.dateOfBirth }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.city }}</td>
+                  <td><span class="badge badge-primary">برنامه ریزی شده</span></td>
+
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination [collectionSize]="scheduledCollectionSize" [(page)]="scheduledPage"
+                [pageSize]="pageSize" (pageChange)="scheduled()">
+              </ngb-pagination>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row" style="direction: rtl;">
+      <div class="col">
+        <div class="card card-primary card-outline">
+          <div class="card-body">
+            <h5 style="text-align: center !important; float: right; width: 100%;" class="card-title">ویزیت های انجام شده
+            </h5>
+            <div class="input-group" style="margin-bottom: 20px;">
+              <input (ngModelChange)="onFilterChangeDone($event)" [ngModel]="filterWordDone" class="form-control"
+                placeholder="برای فیلتر کردن تایپ نمایید.." />
+            </div>
+            
+            <table class="table table-striped" style="text-align: right;">
+              <thead>
+                <tr>
+                  <th scope="col">پزشک</th>
+                  <th scope="col">بیمار</th>
+                  <th scope="col">تاریخ ویزیت</th>
+                  <th scope="col">ساعت ویزیت</th>
+                  <th class="d-none d-xl-table-cell" scope="col">جنیست</th>
+                  <th class="d-none d-xl-table-cell" scope="col">کدملی</th>
+                  <th class="d-none d-xl-table-cell" scope="col">تاریخ تولد</th>
+                  <th class="d-none d-xl-table-cell" scope="col">شهر</th>
+                  <th scope="col">اولویت</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of doneItems">
+                  <td><a [routerLink]="['/doctor', item.doctor._id]">{{ item.doctor.name }}</a></td>
+                  <td><a [routerLink]="['/profile', item.patient._id]">{{ item.patient.name }}</a></td>
+                  <td>{{ item.date }}</td>
+                  <td>{{item.startTime.hour}}:{{item.startTime.minute}} -
+                    {{item.endTime.hour}}:{{item.endTime.minute}}</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'male'">آقا</td>
+                  <td class="d-none d-xl-table-cell" *ngIf="item.patient.gender === 'female'">خانم</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.nationalId }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.dateOfBirth }}</td>
+                  <td class="d-none d-xl-table-cell">{{ item.patient.city }}</td>
+                  <td><span class="badge badge-success">انجام شده</span></td>
+
+                </tr>
+              </tbody>
+            </table>
+          
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination [collectionSize]="doneCollectionSize" [(page)]="donePage"
+                [pageSize]="pageSize" (pageChange)="done()">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+</section>

@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+// @import '~bootstrap/scss/bootstrap';
+
+//@import '~bootstrap-v4-rtl/dist/css/bootstrap-rtl.css';
+@import '~ionicons/css/ionicons.min.css';
+
+@import '~admin-lte/plugins/fontawesome-free/css/all.min.css';
+@import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css';
+@import './assets/css/adminlte.css';
+@import './assets/css/custom.css';
+
+@import '~ngx-toastr/toastr';
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  text-align: right;
+}
+.dropdown-menu {
+  min-width: 18erm !important;
+  float: right !important;
+  text-align: right;
+}
+.dropdown-item {
+  text-align: right;
+}
+
+ngb-typeahead-window {
+  right: 0 !important;
+}
+
+
+.toast-message {
+  text-align: right;
+}
+.toast-title {
+  text-align: right;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import '~@mdi/font/css/materialdesignicons.css';

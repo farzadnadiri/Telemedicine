@@ -1,0 +1,74 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-12">
+      <button
+        class="btn btn-outline-primary pull-right"
+        (click)="open(requestModal)"
+      >
+        افزودن درخواست تسویه
+      </button>
+    </div>
+    <br />
+    <div class="card card-primary card-outline">
+      <div
+        class="card-body"
+        style="direction: rtl; text-align: right !important;"
+      >
+        <table class="table table-striped" style="text-align: right;">
+          <thead>
+            <tr>
+              <th scope="col">مبلغ</th>
+              <th scope="col">وضعیت</th>
+              <th scope="col">شماره شبا</th>
+              <th scope="col">زمان</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ item.amount | number }}</td>
+              <td>{{ item.status === 0 ? 'درانتظار' : 'تسویه شده' }}</td>
+              <td>{{ item.shebaNo }}</td>
+              <td>{{ item.dateTime | jalali }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="load()"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #requestModal let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="close"
+      style="float: left !important; margin: 0 0 0 0 !important;"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-basic-title" style="direction: rtl;">
+      ارسال درخواست تسویه
+    </h4>
+  </div>
+  <div class="modal-body" style="direction: rtl;">
+    <p style="text-align: right; direction: rtl;">
+      با ارسال این درخواست، تمامی موجودی کیف پول شما به شماره شبا وارد شده در
+      پروفایل واریز خواهد گردید
+    </p>
+    <br />
+    <button type="button" class="btn btn-success" (click)="send()">
+      ارسال درخواست تسویه حساب
+    </button>
+  </div>
+</ng-template>

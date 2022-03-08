@@ -1,0 +1,255 @@
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-3 col-md-12">
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img
+                class="profile-user-img img-fluid img-circle"
+                [src]="
+                  profile && profile.image
+                    ? util.getAvatarThumbnail(profile.image)
+                    : 'assets/img/user.png'
+                "
+                alt="User profile picture"
+              />
+            </div>
+
+            <h3 class="profile-username text-center">
+              {{ profile ? profile.name : '' }}
+            </h3>
+
+            <p class="text-muted text-center">
+              {{ profile ? profile.username : '' }}
+            </p>
+
+            <p *ngIf="profile" class="text-muted text-center">
+              <span class="badge badge-primary"
+                >اعتبار {{ profile.credit | number }} تومان</span
+              >
+            </p>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 style="text-align: center; width: 100%;" class="card-title">
+              {{ profile ? profile.name : '' }}
+            </h3>
+          </div>
+
+          <div class="card-body" style="direction: rtl; text-align: right;">
+            <strong><i class="far fa-user mr-1"></i> جنسیت</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? (profile.gender == 'male' ? 'آقا' : 'خانم') : '' }}
+            </p>
+            <hr />
+            <strong><i class="fas fa-id-card mr-1"></i> کدملی</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.nationalId : '' }}
+            </p>
+
+            <hr />
+
+            <strong
+              ><i class="fas fa-birthday-cake mr-1"></i> تاریخ تولد</strong
+            >
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.dateOfBirth : '' }}
+            </p>
+            <hr />
+
+            <strong><i class="fas fa-eye mr-1"></i> مبلغ ویزیت</strong>
+
+            <p
+              *ngIf="profile"
+              style="text-align: left; direction: ltr;"
+              class="text-muted"
+            >
+              {{ profile.visitFee | number }}
+            </p>
+            <hr />
+
+            <strong><i class="fas fa-credit-card mr-1"></i> شماره شبا</strong>
+
+            <p style="text-align: left; direction: ltr;" class="text-muted">
+              {{ profile ? profile.shebaNo : '' }}
+            </p>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+      <div class="col-xl-9 col-md-12">
+        <div class="card">
+          <div class="card-header" style="direction: rtl;">
+            <ul
+              ngbNav
+              #nav="ngbNav"
+              class="nav-pills"
+              style="padding-right: 0px !important;"
+            >
+              <li ngbNavItem>
+                <a ngbNavLink>ویزیت ها</a>
+                <ng-template ngbNavContent>
+                  <div class="active tab-pane" id="activity">
+                    <table
+                      class="table table-striped"
+                      style="text-align: right; direction: rtl;"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">بیمار</th>
+                          <th scope="col">کدملی</th>
+                          <th scope="col">تاریخ ویزیت</th>
+                          <th scope="col">ساعت ویزیت</th>
+                          <th scope="col">وضعیت</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of profileVisitsItems">
+                          <td>{{ item.patient.name }}</td>
+                          <td>{{ item.patient.nationalId }}</td>
+                          <td>{{ item.date }}</td>
+                          <td>
+                            {{ item.startTime.hour }}:{{
+                              item.startTime.minute
+                            }}
+                            - {{ item.endTime.hour }}:{{ item.endTime.minute }}
+                          </td>
+                          <td>
+                            <span
+                              *ngIf="item.status === 2"
+                              class="badge badge-success"
+                              >انجام شده</span
+                            ><span
+                              *ngIf="item.status === 1"
+                              class="badge badge-primary"
+                              >برنامه ریزی شده</span
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileVisitsCollectionSize"
+                        [(page)]="profileVisitsPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadVisits()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>تراکنش ها</a>
+                <ng-template ngbNavContent>
+                  <div class="active tab-pane" id="activity">
+                    <table
+                      class="table table-striped"
+                      style="text-align: right;"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">مبلغ</th>
+                          <th scope="col">علامت</th>
+                          <th scope="col">بابت</th>
+                          <th scope="col">زمان</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of profileTransactionsItems">
+                          <td>{{ item.amount | number }}</td>
+                          <td>{{ item.sign === 0 ? 'دریافت' : 'پرداخت' }}</td>
+                          <td>{{ item.description }}</td>
+                          <td>{{ item.dateTime | jalali }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileTransactionsCollectionSize"
+                        [(page)]="profileTransactionsPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadTransactions()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>درخواست های تسویه</a>
+                <ng-template ngbNavContent>
+                  <div class="active tab-pane" id="activity">
+                    <table
+                      class="table table-striped"
+                      style="text-align: right;"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col">مبلغ</th>
+                          <th scope="col">وضعیت</th>
+                          <th scope="col">شماره شبا</th>
+                          <th scope="col">زمان</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of profileSettlementItems">
+                          <td>{{ item.amount | number }}</td>
+                          <td>
+                            {{ item.status === 0 ? 'درانتظار' : 'تسویه شده' }}
+                          </td>
+                          <td>{{ item.shebaNo }}</td>
+                          <td>{{ item.dateTime | jalali }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="profileSettlementCollectionSize"
+                        [(page)]="profileSettlementPage"
+                        [pageSize]="pageSize"
+                        (pageChange)="loadSettlements()"
+                      >
+                      </ngb-pagination>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem>
+                <a ngbNavLink>تنظیمات</a>
+                <ng-template ngbNavContent>تنظیمات</ng-template>
+              </li>
+            </ul>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <div [ngbNavOutlet]="nav"></div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
